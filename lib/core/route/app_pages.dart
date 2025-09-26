@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import '../constants/app_routes.dart';
-import '../features/onboarding/presentation/onboarding_screen.dart';
-import '../features/location/presentation/location_screen.dart';
-import '../features/alarms/presentation/home_screen.dart';
-import '../features/alarms/presentation/add_edit_alarm_screen.dart';
+import 'app_routes.dart';
+import '../../features/onboarding/presentation/onboarding_screen.dart';
+import '../../features/location/presentation/location_screen.dart';
+import '../../features/alarms/presentation/home_screen.dart';
+import '../../features/alarms/presentation/add_edit_alarm_screen.dart';
 
 class AppPages {
   static final pages = [

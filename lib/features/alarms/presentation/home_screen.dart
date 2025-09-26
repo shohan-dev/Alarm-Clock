@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/app_dimensions.dart';
-import '../../../constants/app_strings.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_text_styles.dart';
+import '../../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_strings.dart';
 import '../domain/alarm_model.dart';
 import 'alarm_controller.dart';
 
@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.textSecondary,
                         size: AppDimensions.iconSmall,
                       ),
-                      const SizedBox(width: AppDimensions.paddingSmall),
+                      SizedBox(width: AppDimensions.paddingSmall),
                       Text(
                         AppStrings.selectedLocation,
                         style: AppTextStyles.bodySmall,
@@ -243,7 +243,7 @@ class AlarmCard extends StatelessWidget {
               Switch(
                 value: alarm.isEnabled,
                 onChanged: (_) => onToggle(),
-                activeColor: AppColors.primary,
+                activeColor: AppColors.backgroundLight,
                 inactiveThumbColor: AppColors.textTertiary,
                 inactiveTrackColor: AppColors.switchInactive,
               ),

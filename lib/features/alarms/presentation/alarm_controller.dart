@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter/foundation.dart';
 import '../domain/alarm_model.dart';
-import '../../../constants/app_routes.dart';
+import '../../../core/route/app_routes.dart';
 import '../../../helpers/notification_helper.dart';
 
 class AlarmController extends GetxController {
@@ -58,7 +58,6 @@ class AlarmController extends GetxController {
     alarms.add(alarm);
     _saveAlarms();
     _scheduleNotification(alarm);
-    Get.snackbar('Success', 'Alarm created successfully!');
   }
 
   void updateAlarm(AlarmModel updatedAlarm) {
@@ -67,7 +66,6 @@ class AlarmController extends GetxController {
       alarms[index] = updatedAlarm;
       _saveAlarms();
       _scheduleNotification(updatedAlarm);
-      Get.snackbar('Success', 'Alarm updated successfully!');
     }
   }
 

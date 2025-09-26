@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'constants/app_theme.dart';
-import 'constants/app_routes.dart';
-import 'helpers/app_pages.dart';
+import 'core/constants/app_theme.dart';
+import 'core/route/app_routes.dart';
+import 'core/route/app_pages.dart';
 import 'helpers/notification_helper.dart';
 
 void main() async {

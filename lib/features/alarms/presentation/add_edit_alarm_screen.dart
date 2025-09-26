@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/app_dimensions.dart';
-import '../../../constants/app_strings.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_text_styles.dart';
+import '../../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_strings.dart';
 import 'add_edit_alarm_controller.dart';
 
 class AddEditAlarmScreen extends StatelessWidget {
@@ -170,7 +170,10 @@ class AddEditAlarmScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => controller.saveAlarm(),
+                  onPressed: () {
+                    print('Save button pressed'); // Debug print
+                    controller.saveAlarm();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(

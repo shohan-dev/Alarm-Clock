@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/app_dimensions.dart';
-import '../../../constants/app_strings.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_text_styles.dart';
+import '../../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_strings.dart';
 import 'location_controller.dart';
 
 class LocationScreen extends StatelessWidget {

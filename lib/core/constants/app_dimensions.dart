@@ -32,7 +32,7 @@ class AppDimensions {
   static const double onboardingIndicatorSize = 8.0;
 
   // Alarm item dimensions
-  static const double alarmItemHeight = 80.0;
+  static const double alarmItemHeight = 100.0;
   static const double alarmItemRadius = 12.0;
 
   // Animation durations (in milliseconds)

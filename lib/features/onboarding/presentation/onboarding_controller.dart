@@ -1,16 +1,16 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../constants/app_routes.dart';
-import '../../../constants/app_strings.dart';
+import '../../../core/route/app_routes.dart';
+import '../../../core/constants/app_strings.dart';
 import '../domain/onboarding_model.dart';
 
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
   final GetStorage storage = GetStorage();
 
-  var currentIndex = 0.obs;
-  var isLastPage = false.obs;
+  int currentIndex = 0;
+  bool isLastPage = false;
 
   // Onboarding data based on the design
   final List<OnboardingModel> onboardingItems = [
@@ -46,13 +46,14 @@ class OnboardingController extends GetxController {
   }
 
   void nextPage() {
-    if (currentIndex.value < onboardingItems.length - 1) {
-      currentIndex.value++;
+    if (currentIndex < onboardingItems.length - 1) {
+      currentIndex++;
       pageController.animateToPage(
-        currentIndex.value,
+        currentIndex,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+      update(); // Update GetBuilder widgets
     } else {
       completeOnboarding();
     }
@@ -68,8 +69,9 @@ class OnboardingController extends GetxController {
   }
 
   void onPageChanged(int index) {
-    currentIndex.value = index;
-    isLastPage.value = index == onboardingItems.length - 1;
+    currentIndex = index;
+    isLastPage = index == onboardingItems.length - 1;
+    update(); // Update GetBuilder widgets
   }
 
   @override

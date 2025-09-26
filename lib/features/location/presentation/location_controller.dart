@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../constants/app_routes.dart';
+import '../../../core/route/app_routes.dart';
 
 class LocationController extends GetxController {
   final GetStorage storage = GetStorage();

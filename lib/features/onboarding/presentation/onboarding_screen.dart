@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/app_dimensions.dart';
-import '../../../constants/app_strings.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_text_styles.dart';
+import '../../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_strings.dart';
 import 'onboarding_controller.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -121,44 +121,48 @@ class OnboardingScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // Page indicators
-                    Obx(() => SmoothPageIndicator(
-                          controller: controller.pageController,
-                          count: controller.onboardingItems.length,
-                          effect: const WormEffect(
-                            dotHeight: AppDimensions.onboardingIndicatorSize,
-                            dotWidth: AppDimensions.onboardingIndicatorSize,
-                            activeDotColor: AppColors.primary,
-                            dotColor: AppColors.textTertiary,
-                            spacing: 16,
-                          ),
-                        )),
+                    GetBuilder<OnboardingController>(
+                      builder: (controller) => SmoothPageIndicator(
+                        controller: controller.pageController,
+                        count: controller.onboardingItems.length,
+                        effect: const WormEffect(
+                          dotHeight: AppDimensions.onboardingIndicatorSize,
+                          dotWidth: AppDimensions.onboardingIndicatorSize,
+                          activeDotColor: AppColors.primary,
+                          dotColor: AppColors.textTertiary,
+                          spacing: 16,
+                        ),
+                      ),
+                    ),
 
                     const SizedBox(height: AppDimensions.paddingXLarge),
 
                     // Next button
-                    Obx(() => SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () => controller.nextPage(),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  AppDimensions.buttonRadius,
-                                ),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: AppDimensions.paddingMedium,
+                    GetBuilder<OnboardingController>(
+                      builder: (controller) => SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => controller.nextPage(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                AppDimensions.buttonRadius,
                               ),
                             ),
-                            child: Text(
-                              controller.isLastPage.value
-                                  ? AppStrings.home
-                                  : AppStrings.next,
-                              style: AppTextStyles.buttonLarge,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: AppDimensions.paddingMedium,
                             ),
                           ),
-                        )),
+                          child: Text(
+                            controller.isLastPage
+                                ? AppStrings.home
+                                : AppStrings.next,
+                            style: AppTextStyles.buttonLarge,
+                          ),
+                        ),
+                      ),
+                    ),
 
                     const SizedBox(height: AppDimensions.paddingLarge),
                   ],
