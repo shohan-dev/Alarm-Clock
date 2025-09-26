@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -113,14 +114,15 @@ class HomeScreen extends StatelessWidget {
                               ),
                             )
                           : ListView.separated(
-                              itemCount: controller.sortedAlarms.length,
+                              itemCount: controller.alarms.length,
                               separatorBuilder: (context, index) =>
                                   const SizedBox(
                                 height: AppDimensions.paddingMedium,
                               ),
                               itemBuilder: (context, index) {
-                                final alarm = controller.sortedAlarms[index];
+                                final alarm = controller.alarms[index];
                                 return AlarmCard(
+                                  key: ValueKey(alarm.id),
                                   alarm: alarm,
                                   onToggle: () =>
                                       controller.toggleAlarm(alarm.id),
@@ -242,7 +244,13 @@ class AlarmCard extends StatelessWidget {
               // Toggle switch
               Switch(
                 value: alarm.isEnabled,
-                onChanged: (_) => onToggle(),
+                onChanged: (_) {
+                  if (kDebugMode) {
+                    print(
+                        'Switch clicked for alarm: ${alarm.id}, current status: ${alarm.isEnabled}');
+                  }
+                  onToggle();
+                },
                 activeColor: AppColors.backgroundLight,
                 inactiveThumbColor: AppColors.textTertiary,
                 inactiveTrackColor: AppColors.switchInactive,

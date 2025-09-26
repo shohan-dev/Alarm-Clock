@@ -9,14 +9,9 @@ import 'helpers/notification_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize GetStorage
   await GetStorage.init();
-  
-  // Initialize notifications
   await NotificationHelper.initialize();
-  
-  // Set system UI overlay style
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -25,12 +20,11 @@ void main() async {
       systemNavigationBarIconBrightness: Brightness.light,
     ),
   );
-  
-  // Set preferred orientations
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  
+
   runApp(const AlarmClockApp());
 }
 
@@ -42,23 +36,11 @@ class AlarmClockApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Smart Travel Alarm',
       theme: AppTheme.theme,
-      initialRoute: _getInitialRoute(),
+      initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.fade,
       transitionDuration: const Duration(milliseconds: 300),
     );
-  }
-  
-  String _getInitialRoute() {
-    final storage = GetStorage();
-    final hasSeenOnboarding = storage.read('hasSeenOnboarding') ?? false;
-    
-    if (hasSeenOnboarding) {
-      final hasLocation = storage.read('user_location') != null;
-      return hasLocation ? AppRoutes.home : AppRoutes.location;
-    }
-    
-    return AppRoutes.onboarding;
   }
 }

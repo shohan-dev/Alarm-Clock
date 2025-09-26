@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'app_routes.dart';
+import '../../features/splash/presentation/splash_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/location/presentation/location_screen.dart';
 import '../../features/alarms/presentation/home_screen.dart';
@@ -9,7 +10,11 @@ class AppPages {
   static final pages = [
     GetPage(
       name: AppRoutes.initial,
-      page: () => const OnboardingScreen(),
+      page: () => const SplashScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.splash,
+      page: () => const SplashScreen(),
     ),
     GetPage(
       name: AppRoutes.onboarding,

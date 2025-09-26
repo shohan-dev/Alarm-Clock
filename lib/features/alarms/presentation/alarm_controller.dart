@@ -33,6 +33,7 @@ class AlarmController extends GetxController {
         final alarmsList = List<Map<String, dynamic>>.from(alarmsData);
         alarms.value =
             alarmsList.map((json) => AlarmModel.fromJson(json)).toList();
+        _sortAlarms();
       }
     } catch (e) {
       // Error loading alarms - handle silently in production
@@ -56,6 +57,7 @@ class AlarmController extends GetxController {
 
   void addAlarm(AlarmModel alarm) {
     alarms.add(alarm);
+    _sortAlarms();
     _saveAlarms();
     _scheduleNotification(alarm);
   }
@@ -64,6 +66,7 @@ class AlarmController extends GetxController {
     int index = alarms.indexWhere((alarm) => alarm.id == updatedAlarm.id);
     if (index != -1) {
       alarms[index] = updatedAlarm;
+      _sortAlarms();
       _saveAlarms();
       _scheduleNotification(updatedAlarm);
     }
@@ -71,25 +74,92 @@ class AlarmController extends GetxController {
 
   void deleteAlarm(String alarmId) {
     alarms.removeWhere((alarm) => alarm.id == alarmId);
+    _sortAlarms();
     _saveAlarms();
     _cancelNotification(alarmId);
     Get.snackbar('Success', 'Alarm deleted successfully!');
   }
 
   void toggleAlarm(String alarmId) {
+    if (kDebugMode) {
+      print('=== TOGGLE ALARM DEBUG ===');
+      print('Toggling alarm with ID: $alarmId');
+      print('Current alarms list:');
+      for (int i = 0; i < alarms.length; i++) {
+        print(
+            'Index $i: ID=${alarms[i].id}, enabled=${alarms[i].isEnabled}, time=${alarms[i].formattedTime}');
+      }
+    }
+
     int index = alarms.indexWhere((alarm) => alarm.id == alarmId);
+    if (kDebugMode) {
+      print('Found alarm at index: $index');
+    }
+
     if (index != -1) {
       final alarm = alarms[index];
+      if (kDebugMode) {
+        print('Current alarm status: ${alarm.isEnabled}');
+        print('Alarm details: ${alarm.toJson()}');
+      }
+
       final updatedAlarm = alarm.copyWith(isEnabled: !alarm.isEnabled);
       alarms[index] = updatedAlarm;
+      _sortAlarms(); // Maintain consistent ordering after state change
+
+      if (kDebugMode) {
+        print('Updated alarm status: ${updatedAlarm.isEnabled}');
+        print('Updated alarm details: ${updatedAlarm.toJson()}');
+      }
+
       _saveAlarms();
+
+      // Force UI update
+      alarms.refresh();
 
       if (updatedAlarm.isEnabled) {
         _scheduleNotification(updatedAlarm);
       } else {
         _cancelNotification(alarmId);
       }
+
+      if (kDebugMode) {
+        print('=== AFTER UPDATE ===');
+        for (int i = 0; i < alarms.length; i++) {
+          print(
+              'Index $i: ID=${alarms[i].id}, enabled=${alarms[i].isEnabled}, time=${alarms[i].formattedTime}');
+        }
+        print('=== END DEBUG ===');
+      }
+    } else {
+      if (kDebugMode) {
+        print('Alarm with ID $alarmId not found!');
+      }
     }
+  }
+
+  // In-place sort to avoid UI index/id mismatch; keeps enabled first by next trigger time
+  void _sortAlarms() {
+    final enabledAlarms = alarms.where((a) => a.isEnabled).toList();
+    final disabledAlarms = alarms.where((a) => !a.isEnabled).toList();
+    enabledAlarms.sort((a, b) => a.nextAlarmTime.compareTo(b.nextAlarmTime));
+    disabledAlarms.sort((a, b) => a.nextAlarmTime.compareTo(b.nextAlarmTime));
+    final sorted = [...enabledAlarms, ...disabledAlarms];
+    if (!_listEqualsById(sorted, alarms)) {
+      alarms.assignAll(sorted);
+    }
+    if (kDebugMode) {
+      print(
+          'Sorted alarms order (in-place): ${alarms.map((a) => a.id).join(', ')}');
+    }
+  }
+
+  bool _listEqualsById(List<AlarmModel> a, List<AlarmModel> b) {
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i].id != b[i].id) return false;
+    }
+    return true;
   }
 
   Future<void> _scheduleNotification(AlarmModel alarm) async {
@@ -113,16 +183,5 @@ class AlarmController extends GetxController {
 
   void navigateToEditAlarm(AlarmModel alarm) {
     Get.toNamed(AppRoutes.editAlarm, arguments: alarm);
-  }
-
-  // Sort alarms by time
-  List<AlarmModel> get sortedAlarms {
-    final enabledAlarms = alarms.where((alarm) => alarm.isEnabled).toList();
-    final disabledAlarms = alarms.where((alarm) => !alarm.isEnabled).toList();
-
-    enabledAlarms.sort((a, b) => a.nextAlarmTime.compareTo(b.nextAlarmTime));
-    disabledAlarms.sort((a, b) => a.nextAlarmTime.compareTo(b.nextAlarmTime));
-
-    return [...enabledAlarms, ...disabledAlarms];
   }
 }
